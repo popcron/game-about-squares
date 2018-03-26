@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7cb7070ae912a244eb6590260ab07bfb
+guid: 2d6de8405708bf94ba54e08435718cef
 timeCreated: 1522084576
 licenseType: Pro
 TextureImporter:
@@ -71,13 +71,13 @@ TextureImporter:
     serializedVersion: 2
     sprites: []
     outline:
-    - - {x: 0, y: 2}
-      - {x: -1.7320508, y: -1.0000001}
-      - {x: 1.7320509, y: -0.9999998}
+    - - {x: -2, y: 2}
+      - {x: -2, y: -2}
+      - {x: 2, y: -2}
     physicsShape:
-    - - {x: 0, y: 2}
-      - {x: -1.7320508, y: -1.0000001}
-      - {x: 1.7320509, y: -0.9999998}
+    - - {x: -2, y: 2}
+      - {x: -2, y: -2}
+      - {x: 2, y: -2}
   spritePackingTag: 
   userData: 
   assetBundleName: 

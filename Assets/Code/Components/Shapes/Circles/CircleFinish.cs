@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class CircleFinish : Circle
 {
-    private void OnDrawGizmos()
+    [SerializeField]
+    private SquareColor color;
+
+    public SquareColor Color
     {
-        transform.name = "Finish";    
+        get
+        {
+            return color;
+        }
+        set
+        {
+            color = value;
+            circle.color = GameManager.ToColor(color);
+        }
     }
 
-    protected override void Enter(Square square)
-    {
-        base.Enter(square);
+    private SpriteRenderer circle;
 
-        LevelManager.Level++;
+    private void Awake()
+    {
+        circle = transform.Find("Circle").GetComponent<SpriteRenderer>();
+        transform.name = "Finish";
+    }
+
+    private void OnDrawGizmos()
+    {
+        Awake();
+        Color = Color;
     }
 }

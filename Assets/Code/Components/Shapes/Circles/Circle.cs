@@ -5,22 +5,32 @@ using UnityEngine;
 
 public class Circle : Shape
 {
+    public Square square;
+
     private void Awake()
     {
-        Square.onMove += Refresh;   
+        //Square.onMove += Refresh;   
     }
 
-    private void Refresh(Square square)
+    public virtual void Enter(Square square)
     {
-        //check if this square has entered this circle
-        if (square.X == X && square.Y == Y)
+        this.square = square;
+        if(this.square)
         {
-            Enter(square);
+            this.square.circle = this;
         }
+
+        Debug.Log(square + " entered " + this);
     }
 
-    protected virtual void Enter(Square square)
+    public virtual void Exit(Square square)
     {
+        if(this.square)
+        {
+            this.square.circle = null;
+        }
 
+        this.square = null;
+        Debug.Log(square + " exited " + this);
     }
 }

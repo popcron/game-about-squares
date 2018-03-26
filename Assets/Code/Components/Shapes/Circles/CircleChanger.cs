@@ -13,7 +13,7 @@ public class CircleChanger : Circle
         triangle.localEulerAngles = direction.ToEuler();
     }
 
-    protected override void Enter(Square square)
+    public override void Enter(Square square)
     {
         base.Enter(square);
 

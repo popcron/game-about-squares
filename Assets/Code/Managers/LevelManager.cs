@@ -32,6 +32,7 @@ public class LevelManager : MonoBehaviour
                 if(instance.levels[i].level == value)
                 {
                     instance.levels[i].Enable();
+
                     if (onLoad != null) onLoad.Invoke(instance.levels[i]);
                 }
                 else
@@ -45,6 +46,12 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        levels = GameObject.Find("Levels").GetComponentsInChildren<Level>(true);
+        for (int i = 0; i < levels.Length; i++)
+        {
+            levels[i].SetOrigin();
+        }
     }
 
     private void OnEnable()
