@@ -17,6 +17,7 @@ public class CircleChanger : Circle
     {
         base.Enter(square);
 
+        //when a square enters this circle, change direction
         square.Direction = direction;
     }
 }

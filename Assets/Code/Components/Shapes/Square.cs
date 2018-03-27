@@ -8,10 +8,7 @@ public class Square : Shape
     public static Action<Square> onMove;
 
     public Circle circle;
-
-    private Direction previousPositionDirection;
-    private Direction previousFaceDirection;
-
+    
     private Direction moveDirection;
     private float moveTime;
     private Vector2 moveStart;
@@ -33,6 +30,7 @@ public class Square : Shape
     private SquareColor originColor;
     private Direction originFaceDirection;
 
+    //setter and getter for facing direction
     public Direction Direction
     {
         get
@@ -41,11 +39,11 @@ public class Square : Shape
         }
         set
         {
-            previousFaceDirection = faceDirection;
             faceDirection = value;
         }
     }
 
+    //color of the square
     public SquareColor Color
     {
         get
@@ -64,6 +62,7 @@ public class Square : Shape
         }
     }
 
+    //assigning defaults
     public override void SetOrigin()
     {
         base.SetOrigin();
@@ -73,6 +72,7 @@ public class Square : Shape
         originFaceDirection = faceDirection;
     }
 
+    //reset to defaults
     public override void Initialize()
     {
         base.Initialize();
@@ -86,6 +86,7 @@ public class Square : Shape
 
     private void Awake()
     {
+        //get references
         triangle = transform.Find("Triangle");
         squareTop = transform.Find("SquareTop").GetComponent<SpriteRenderer>();
         squareSide = transform.Find("SquareSide").GetComponent<SpriteRenderer>();
@@ -114,6 +115,10 @@ public class Square : Shape
 
     private void PushNeighbours(Direction direction)
     {
+        //for every adjacent square
+        //ask these squares pushed to also push their neighbours
+        //recursion!
+
         var squares = FindObjectsOfType<Square>();
         for (int i = 0; i < squares.Length; i++)
         {
@@ -166,17 +171,20 @@ public class Square : Shape
     {
         if(move)
         {
+            //lerping position
             //Vector2 position = Vector2.Lerp(moveStart, moveStart + moveDirection.ToVector(), moveTime);
             Vector2 position = Vector2.Lerp(transform.position, moveStart + moveDirection.ToVector(), Time.deltaTime * 10f);
 
             if (moveTime >= GameManager.TurnTime)
             {
+                //after this turn time, round off the positions
                 move = false;
 
                 //round positions
                 position.x = Mathf.RoundToInt(position.x);
                 position.y = Mathf.RoundToInt(position.y);
 
+                //invoke all subscribed methods
                 if (onMove != null) onMove.Invoke(this);
             }
 
@@ -186,11 +194,13 @@ public class Square : Shape
 
         if(circle && circle is CircleFinish)
         {
+            //if theres a circle overlap, show the circle color on the indicator sprite
             Color color = GameManager.ToColor(((CircleFinish)circle).Color);
             indicator.color = new Color(color.r * 0.6f, color.g * 0.6f, color.b * 0.6f);
         }
         else
         {
+            //reset the triangle color
             indicator.color = GameManager.ToColor(SquareColor.Clear);
         }
         

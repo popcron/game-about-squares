@@ -6,6 +6,7 @@ public class CircleFinish : Circle
 {
     [SerializeField]
     private SquareColor color;
+    private SpriteRenderer circle;
 
     public SquareColor Color
     {
@@ -20,17 +21,15 @@ public class CircleFinish : Circle
         }
     }
 
-    private SpriteRenderer circle;
-
     private void Awake()
     {
         circle = transform.Find("Circle").GetComponent<SpriteRenderer>();
         transform.name = "Finish";
+        Color = Color;
     }
 
     private void OnDrawGizmos()
     {
         Awake();
-        Color = Color;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//generators a background
 public class Floor : MonoBehaviour
 {
     public Sprite sprite;
@@ -35,13 +36,14 @@ public class Floor : MonoBehaviour
         int width = Mathf.RoundToInt(this.width / 100);
         int height = Mathf.RoundToInt(this.height / 100);
 
+        //create the grid
         for (int x = -width; x <= width; x++)
         {
             for (int y = -height; y <= height; y++)
             {
                 SpriteRenderer tile = new GameObject("Tile").AddComponent<SpriteRenderer>();
                 tile.sprite = sprite;
-                tile.color = (x + y) % 2 == 0 ? a : b;
+                tile.color = (x + y) % 2 == 0 ? a : b; //checkered pattern
                 tile.sortingOrder = -20;
 
                 tile.transform.SetParent(transform);

@@ -19,6 +19,7 @@ public enum Direction
     Down
 }
 
+//stores turn information
 [Serializable]
 public class GameSnapshot
 {
@@ -41,11 +42,14 @@ public class GameManager : MonoBehaviour
     public Color blue = Color.blue;
     public Color green = Color.green;
 
+    //this is true when a square is lerping
     private bool waiting;
 
     private void Awake()
     {
         instance = this;
+
+        //load level 1
         LevelManager.Level = 1;
         shapes = FindObjectsOfType<Shape>();
     }
@@ -54,6 +58,8 @@ public class GameManager : MonoBehaviour
     {
         //clear the snapshot history when a new level loads
         snapshots.Clear();
+
+        //get akk shapes after a level loads
         shapes = FindObjectsOfType<Shape>();
     }
 
@@ -73,6 +79,7 @@ public class GameManager : MonoBehaviour
         CheckForMouse();
         CheckForWin();
 
+        //undo if this isnt the first turn, and if a turn isnt currently taking action
         if(Input.GetKeyDown(KeyCode.Space) && turn > 0 && !waiting)
         {
             Undo();
@@ -84,6 +91,7 @@ public class GameManager : MonoBehaviour
         if (!instance) instance = FindObjectOfType<GameManager>();
 
         //process circle overlaps for every square
+        //after a turn is made
         for (int i = 0; i < instance.shapes.Length; i++)
         {
             if (instance.shapes[i] is Circle)
@@ -105,6 +113,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
+                //overlap information changed
                 if(oldSquare != newSquare)
                 {
                     if (oldSquare) circle.Exit(oldSquare);
@@ -163,6 +172,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator WaitForOverlaps()
     {
+        //wait for turn time, and then do overlap checks then
+
         waiting = true;
         yield return new WaitForSeconds(TurnTime);
 
@@ -182,11 +193,17 @@ public class GameManager : MonoBehaviour
             moveDirection = moveDirection,
             faceDirection = faceDirection
         };
+
+        //add this information
         instance.snapshots.Add(snapshot);
     }
 
     private void CheckForWin()
     {
+        //check if all circles in the level, have a square of the same color overlapping them
+        //if there is a mismatch in any of the circles
+        //then it means that the win state hasnt reached, therefore, exit this method
+
         bool win = true;
         for (int i = 0; i < shapes.Length; i++)
         {
@@ -200,12 +217,14 @@ public class GameManager : MonoBehaviour
                 }
                 else if (circle.square && circle.square.Color != circle.Color)
                 {
+                    //mismatch
                     win = false;
                     break;
                 }
             }
         }
 
+        //no color mismatches found, proceed to next level
         if(win)
         {
             LevelManager.Level++;
@@ -216,6 +235,10 @@ public class GameManager : MonoBehaviour
     {
         //dont check for mouse if waiting for turn
         if (waiting) return;
+
+        //loop through every shape,
+        //and check if a mouse overlaps with the shape
+        //if so, then check for mouse down events
 
         Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         for (int i = 0; i < shapes.Length; i++)
@@ -232,6 +255,8 @@ public class GameManager : MonoBehaviour
 
     public static Color ToColor(SquareColor value)
     {
+        //converts enum SquareColor to a game manager color value
+
         if (!instance) instance = FindObjectOfType<GameManager>();
 
         if (value == SquareColor.Red) return instance.red;
