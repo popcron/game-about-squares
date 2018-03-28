@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Square : Shape
 {
-    public static Action<Square> onMove;
-
     public Circle circle;
     
     private Direction moveDirection;
@@ -183,9 +181,6 @@ public class Square : Shape
                 //round positions
                 position.x = Mathf.RoundToInt(position.x);
                 position.y = Mathf.RoundToInt(position.y);
-
-                //invoke all subscribed methods
-                if (onMove != null) onMove.Invoke(this);
             }
 
             transform.position = position;
